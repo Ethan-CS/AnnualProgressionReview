@@ -3,9 +3,9 @@
 \documentclass[../report.tex]{subfiles}
 \begin{document}
 
-Our research over the past year has focused into two main strands: a formal, mathematical approach and an experimental approach. Our motivation for this two-pronged {\it modus operandi} is to ultimately develop a model for disease spread formally, using dynamical system and graph theoretic approaches, which we then use an experimental implementation to algorithmically explore different approaches to the model, for instance in examining candidates for theoretically optimal public health strategies in the context of a disease. To explain this work in detail, we first explain the relevant concepts and any key pieces of literature. We begin by discussing The Firefighter Problem and explain how it can be adapted to a rudimentary model of disease; we then discuss Percolation Theory and its use in a graph-theoretic context; we end by discussing compartmental graph models of disease, in particular examining the differential equations required to describe such models exactly.
+We begin by discussing The Firefighter Problem and explain how it can be adapted to a rudimentary model of disease; we then discuss Percolation Theory and its use in a graph-theoretic context; we end by discussing compartmental graph models of disease, in particular examining the differential equations required to describe such models exactly.
 
-\subsection{Firefighter}
+\subsection{The Firefighter Problem}
 
 The Firefighter Problem, which we refer to as simply {\scshape Firefighter}, was first introduced by Hartnell \cite{hartnell_1995} and models an outbreak of fire with a firefighter strategically blocking its path. {\scshape Firefighter} has been the primary foundation for our approaches to modelling over the last year.
 
@@ -30,21 +30,22 @@ We formalise {\scshape Firefighter} as follows: at $t=0$, a fire breaks out at s
 
 Common questions to ask in {\scshape Firefighter} include: how do we minimise the number of vertices that will be burnt? In a given class of trees, what is the average number of burnt vertices? Is the problem NP-complete?
 
-There are many natural contextualisations of {\scshape Firefighter} - if we let each vertex be an individual and let the edges between them represent social contact. This is a simple model for disease infection, which is where our interest in the game enters. We may instead we think of these edges representing virtual contact between individuals on social media, we have a model for the spread of viral internet memes \cite{obrien_2019}.
+If we let each vertex be an individual and let the edges between them represent social contact. This is a simple model for disease infection, which is where our interest in the game enters. There are many natural contextualisations of {\scshape Firefighter} beyond modelling disease spread, which we may choose to apply our work to in future - for instance, we may think of edges representing virtual contact between individuals on social media, yielding a model for the spread of viral internet memes \cite{obrien_2019}.
 
 \subsection{Percolation Theory}
 \label{sec:perc}
 
-Widely known and used in physics, statistics and mathematics, Percolation theory involves modelling scenarios as $n$-dimensional graphs, so application to {\scshape Firefighter} is not entirely unexpected. Hence, we will now examine the utility we have found Percolation Theory may provide in extending and expanding modelling work from {\scshape Firefighter} as a foundation.
+Widely known and used in physics, statistics and mathematics, Percolation theory involves modelling scenarios as $n$-dimensional graphs, so application to {\scshape Firefighter} is not entirely unexpected. Hence, we will now examine percolation theory in order to later explain the utility we have found it may yield in extending and expanding modelling work from {\scshape Firefighter}.
 
-In percolation, the edges between vertices in the graph can be either `open' or `closed' with probability $p$ and $1-p$ respectively. We can think of percolation problems as liquid being poured onto a porous material and whether there is a path from hole to hole along open paths through the material. Note that removing more and more edges moves us towards a critical point at which removing further edges would cause the graph to fall apart into smaller clusters of vertices and edges that have no access to each other \cite{grimmett_1999}. This is known as `bond' percolation, as edges correspond to bonds in many of its applications.\\
+In percolation, the edges between vertices in the graph can be either `open' or `closed' with probability $p$ and $1-p$ respectively. We can think of percolation problems as liquid being poured onto a porous material and whether there is a path from hole to hole along open paths through the material. Note that removing more and more edges moves us towards a critical point at which removing further edges would cause the graph to fall apart into smaller clusters of vertices and edges that have no access to each other \cite{grimmett_1999}. This is known as `bond' percolation, as edges correspond to bonds in many of its applications.
 \begin{figure}[ht]
 	\centering
 		\includegraphics[width=0.45\linewidth]{percolated-graph.jpg}
 	\caption{A graph that has been subject to percolation.}
 	\label{fig:percolated-graph}
 \end{figure}
-Several authors have suggested percolation as a possible approach to {\scshape Firefighter} \cite{finbow_2009}. In this context, we could determine the critical point to see how we might contain the fire to a smaller cluster that cannot spread to the wider graph. For {\scshape Firefighter}, site percolation is more applicable: rather than considering open or closed \emph{edges} (`bonds') between vertices as in bond percolation, we consider each \emph{vertex} (`site') as being `occupied' or `unoccupied' with probability $p$ and $1-p$ respectively.\\
+
+Several authors have suggested percolation as a possible approach to {\scshape Firefighter} \cite{finbow_2009}. In this context, we could determine the critical point to see how we might contain the fire to a smaller cluster that cannot spread to the wider graph. For {\scshape Firefighter}, site percolation is more applicable: rather than considering open or closed \emph{edges} (`bonds') between vertices as in bond percolation, we consider each \emph{vertex} (`site') as being `occupied' or `unoccupied' with probability $p$ and $1-p$ respectively.
 
 Formally, we consider a point lattice $\mathbb{L}$ and denote the open cluster as $C(x)\text{,~where~}x\in\mathbb{L}$ is the local origin of the cluster. This cluster $C(x)$ is defined as the set of all vertices that can be reached from open paths beginning at the nucleation site, $x$. Then, we are particularly interested in the \emph{percolation probability}:
 $$
@@ -64,7 +65,7 @@ where $\mu_v$ is the \emph{Bernoulli measure}, which returns $p$ when $v$ is ope
 
 \subsection{Markovian SIR epidemics on networks}
 
-In the past year, we have spent significant time understanding, applying and expanding the results from the paper ``Exact deterministic representation of Markovian ${SIR}$ epidemics on networks with and without loops," \cite{kiss_2014} so we will now provide a review of this work and its utility. We will go on to detail the work done so far in extending the results from this paper in the following section.
+In the past year, we have also spent significant time understanding, applying and expanding results around equations describing Markovian $SIR$ graph models of disease exactly \cite{kiss_2014} so we will now provide a review of the key work in this area and its utility. We will go on to detail the work done so far in extending the results from this paper in the following section.
 
 In \cite{kiss_2014}, the authors note that there are generally three approaches to compartmental models of disease. We can:
 \begin{enumerate}
