@@ -1,0 +1,96 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage[UKenglish]{babel}
+\usepackage{caption}
+\usepackage[UKenglish]{datetime}
+\usepackage{enumitem}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage{subfiles}
+
+\graphicspath{{./assets/}}
+
+\newcommand{\makenames}{{
+  \bigskip
+  \footnotesize
+  \textsc{Ethan Kelly} \par\nopagebreak
+  	\hspace{3\parindent}\texttt{e.kelly.1@research.gla.ac.uk}\par\nopagebreak
+	\vspace{3mm}
+  \textsc{Principal supervisor: Jessica Enright}\par\nopagebreak
+  	\hspace{3\parindent}\texttt{Jessica.Enright@glasgow.ac.uk}\par\nopagebreak
+	\vspace{3mm}
+  \textsc{Second supervisor: Alice Miller}\par\nopagebreak
+  	\hspace{3\parindent}\texttt{Alice.Miller@glasgow.ac.uk}\par\nopagebreak
+	\vspace{1mm}
+}}    
+
+\newcommand{\makeaddress}{{
+  \makenames
+  \footnotesize
+	\begin{flushright}
+      \textsc{Department of Computing Science\\Sir Alwyn Williams Building\\University of Glasgow\\G12 8QN}
+    \end{flushright}
+}}
+
+\title{\bf First Annual Progression Report}
+\author{Ethan Kelly}
+\setcounter{tocdepth}{3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\maketitle
+{\centering
+ \noindent\rule{10cm}{0.6pt}\\
+ \makenames
+ \noindent\rule{10cm}{0.6pt}\\
+}
+\tableofcontents
+\newpage
+
+%%%%%
+\section{Introduction}
+\label{sec:intro}
+
+\subfile{sections/1_introduction}
+
+
+%%%%%
+\section{Literature Review}
+\label{sec:lit}
+
+\subfile{sections/2_lit-review}
+
+
+%%%%%
+\section{Work done so far}
+\label{sec:work}
+
+\subfile{sections/3_work-so-far}
+
+
+%%%%%
+\section{Research Plan}
+\label{sec:plan}
+
+\subfile{sections/4_plan}
+
+
+%%%%%
+\newpage
+\bibliographystyle{siam}
+\nocite{*}
+\bibliography{mybib.bib}
+
+\vspace*{\fill}
+
+\makeaddress
+
+\end{document}
