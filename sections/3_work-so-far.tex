@@ -82,7 +82,7 @@ We have been working on an implementation of the above work in equations generat
 
 \subsection{Uses of Percolation in The Firefighter Problem}
 
-We have identified three main avenues that may be pursued in {\scshape Firefighter} using Percolation: 
+We have identified three main avenues that we would like to explore further regarding the use of Percolation Theory in {\scshape Firefighter}: 
 \begin{itemize}
 	\item the firefighter may use percolation in order to defend the graph,
 	\item the fire might spread with percolation probability $p$ or
@@ -99,6 +99,7 @@ The first of these options might be used when the firefighter can save more than
 %%%%%%%%%%
 
 \subsubsection{Better than random}
+
 One potential use for the firefighter using percolation as a method of defence would be as a baseline test: in most scenarios, a method for obtaining defence strategies should be at least as effective as a random defence sequence. We could find such a random sequence using percolation for comparison purposes. Consider a sequence of vertices in graph $G$, written as $d_1, d_2,\dots, d_t$. An optimal defence sequence could be found using integer programming as provided by Finbow and MacGillivray \cite{finbow_2009}:
 \begin{equation*}
 	\begin{array}{ll@{}ll}
@@ -119,6 +120,7 @@ We now focus our attention on the fire spread being determined by percolation (r
 Where we wish to consider vertices as individuals and edges as the connections between them, percolation may give us a more useful model for disease spread when we do not assume the population is well mixed and instead introduce probability functions to correspond to the likelihood one vertex is connected to another.
 
 \subsubsection{Irregular population density}
+
 A great deal of the literature surrounding {\scshape Firefighter} assumes a regular graph - that is, in the context of disease we assume a well-mixed population where everyone has equal probability of coming into contact with their neighbours. Of course, this is a significant simplification of reality: some individuals are very well connected and have lots of contact with others, whereas some people have significantly less contact with others. In the context of a forest fire, the density of a forest is irregular and there is a probability in the unit interval that fire can spread between two trees depending on their proximity (among other factors): an example of this can be seen in figure \ref{fig:largeperc}. Thus, percolation on regular grids to more closely resemble populations or forest density could lead to far more useful and realistic modelling results.
 
 \begin{figure}[!ht] 
