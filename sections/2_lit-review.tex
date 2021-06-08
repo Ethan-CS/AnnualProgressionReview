@@ -109,7 +109,9 @@ The authors also provide a ``recipe-like" approach to establish the feasibility 
 $$
 \displaystyle N_{EQ}(G)=\sum^P_{i=1}m_if_i - 2\sum^{L}_{j=1}(\text{Ind}(v_{i_j})-1).
 $$
-where $P$ is the number of distinct sub-graphs produced when the original graph is spliced into independent sub-graphs through cut-vertices, $m_i$ represents the number of equations required to describe the corresponding sub-graph $i$, $f_i$ is the frequency or count of the sub-graph $G_i$ and $\text{Ind}(v_{i_j})$ is the number of sub-graphs to which the cut-vertex $v_{i_j}$ belongs \cite{kiss_2014}.
+where $P$ is the number of distinct sub-graphs produced when the original graph is spliced into sub-graphs through cut-vertices, $m_i$ represents the number of equations required to describe the corresponding sub-graph $i$, $f_i$ is the frequency or count of the sub-graph $G_i$ and $\text{Ind}(v_{i_j})$ is the number of sub-graphs to which the cut-vertex $v_{i_j}$ belongs \cite{kiss_2014}.
+
+In their concluding remarks, the authors recommend the implementation of an algorithmic approach to this equations generation with closure detection as the examples provided in their work were done by hand \cite{kiss_2014}. This is something we have been working on for several months, which will be discussed in Section \ref{subsubsec:implementation}. 
 
 %This takes a sum across the number of equations for all sub-graphs and adjusts to account for unnecessary multiplications caused by cut-vertices being part of multiple sub-graphs, which is a move made in illustrative examples throughout the work.
 
