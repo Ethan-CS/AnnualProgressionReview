@@ -32,9 +32,9 @@ In our implemented model, we begin with a graph. This graph has a particular num
   \label{fig:defence}
 \end{figure}
 
-We then assign an agent to each vertex, meaning there is a particular set of agency-related characteristics for each vertex. These characteristics correspond to proximity to infection, their current (compartmental) state and intrinsic inclination towards protection. Agents can be in a number of states, which at the moment are `susceptible' (could contract), `infected' (currently has the infection and is infectious), `recovered' (previously had the infection, may now have some degree of immunity in certain contexts) and `protected' (cannot contract the infection). The final protection-related agent attribute is a novel introduction to the field that we have taken a large amount of time to vary, study and reassess: we term this the `protection rating' of the given vertex. For context, in some infection scenarios this may correspond to how strict the person is with mitigating behaviours to avoid contracting a disease such as hand hygiene, personal protective equipment usage and so on. We can assign this rating purely randomly, based upon proximity to infection or a combination of the two approaches.
+We then assign an agent to each vertex. Agents can be in a number of states, such as `susceptible' (could contract), `infected' (currently has the infection and is infectious), `recovered' (previously had the infection) and `protected' (cannot contract the infection). The final protection-related agent attribute is where much of our work has been focused: we study the dynamics of the system with this state using the `protection ratings' of vertices. For context, in some infection scenarios this may correspond to how strict the person is with mitigating behaviours to avoid contracting a disease such as hand hygiene, personal protective equipment usage and so on. We currently assign this rating in one of three ways: purely randomly, based upon proximity to infection or a combination of the two approaches.
 
-Once these agents are initialised, an outbreak (source) vertex is selected from the graph and the agent at that location is moved to the `infected' compartment of the model. Then, a defensive move is made, which is adapted to account for the inherent individual protection ratings. Currently, there are three main defence strategies that are deployed and two further strategies that can be deployed for comparisons.
+Once these agents are initialised, an outbreak (source) vertex is selected from the graph and the agent at that location is moved to the `infected' compartment of the model. Then, a defensive move is made, which is adapted to account for the inherent individual protection ratings. Currently, there are three main defence strategies that are deployed.
 
 \subsection{Graph-based compartmental models}
 
@@ -42,20 +42,20 @@ In this section, we will detail and explain the work we have done in extending t
 
 \subsubsection{Adding a new state to the model}
 
-Let $\zeta_i$ be the probability that we defend individual $i$. This can be determined in a number of different ways and we propose that a good candidate for this would be an algorithmic approach.\footnote{That is, determine the best candidates for defence each turn and distribute some given probability across them by the expected benefit in containing the infection gained by defending each vertex.} Similarly, let $\alpha_i$ represent the efficacy of the protection measure for individual $i$, which may decay over time and vary from person to person (for instance, the protection could be more effective in certain age groups than in others). Using these rates of protection and effectiveness, for fixed population size the differential equations become:
+Let $\zeta_i$ be the probability that we defend individual $i$. This can be determined in a number of different ways and we propose that a good candidate for this would be an algorithmic approach.\footnote{That is, determine the best candidates for defence each turn and distribute some given probability across them by the expected benefit in containing the infection gained by defending each vertex.} Similarly, let $\alpha_i$ represent the efficacy of the protection measure for individual $i$, which may decay over time and vary from person to person. Using these rates of protection and effectiveness, for fixed population size the differential equations become:
 \begin{align}
 \dot{\langle S_i \rangle} & = \alpha_i \langle P_i \rangle - \sum^{N}_{j=1}T_{ij} \langle S_i I_j \rangle - \zeta_i\langle S_i \rangle\\
 \dot{\langle I \rangle} & =\sum^{N}_{j=1}T_{ij}\langle S_i I_j \rangle - \gamma_i \langle I \rangle \\
 \dot{\langle R_i \rangle} & = \gamma_i \langle I \rangle \\
 \dot{\langle P_i \rangle} & = \zeta_i \langle S_i \rangle - \alpha_i \langle P_i \rangle.
 \end{align} 
-Accounting for vital dynamics, with a birth and death rate (for simplicity) of $\mu$, these equations are:
-\begin{align}
-\dot{\langle S_i \rangle} & = \alpha_i \langle P_i \rangle - \sum^{N}_{j=1}T_{ij} \langle S_i I_j \rangle + \mu N - \mu \langle S_i \rangle - \zeta_i\langle S_i \rangle\\
-\dot{\langle I \rangle} & =\sum^{N}_{j=1}T_{ij}\langle S_i I_j \rangle - \gamma_i \langle I \rangle - \mu \langle I_i \rangle\\
-\dot{\langle R_i \rangle} & = \gamma_i \langle I \rangle + \mu \langle R_i \rangle\\
-\dot{\langle P_i \rangle} & = \zeta_i \langle S_i \rangle - \alpha_i \langle P_i \rangle - \mu \langle P_i \rangle.
-\end{align}
+%Accounting for vital dynamics, with a birth and death rate (for simplicity) of $\mu$, these equations are:
+%\begin{align}
+%\dot{\langle S_i \rangle} & = \alpha_i \langle P_i \rangle - \sum^{N}_{j=1}T_{ij} \langle S_i I_j \rangle + \mu N - \mu \langle S_i \rangle - \zeta_i\langle S_i \rangle\\
+%\dot{\langle I \rangle} & =\sum^{N}_{j=1}T_{ij}\langle S_i I_j \rangle - \gamma_i \langle I \rangle - \mu \langle I_i \rangle\\
+%\dot{\langle R_i \rangle} & = \gamma_i \langle I \rangle + \mu \langle R_i \rangle\\
+%\dot{\langle P_i \rangle} & = \zeta_i \langle S_i \rangle - \alpha_i \langle P_i \rangle - \mu \langle P_i \rangle.
+%\end{align}
 
 \subsubsection{Results for total system of equations}
 

@@ -48,12 +48,12 @@ In this discussion, we will begin by discussing the standard $SIR$ model, allowi
 
 \subsubsection{Standard $SIR$ model with fixed population}
 
-The $SIR$ Model is a compartmental epidemiological model with three compartments (generally referred to as `states') related to an epidemic: {\it susceptible, infected} and {\it recovered.} We define $S(t)$ as the number of susceptible people (i.e. those who do not currently have but are able to contract the infection) at time $t$, $I(t)$ as the number of infected people (i.e. individuals who have the disease and are infectious) at time $t$ and finally $R(t)$ as the number of recovered people (i.e. those who have had the disease and subsequently recovered, granting them at least some level of immunity in certain contexts). For a fixed population $N$, we have that $S(t) + I(t) + R(t) = N$ - that is, we assume a fixed population where we do not wish to consider vital dynamics, which is a reasonable assumption to make when an epidemic is short-lived. Then, for $\beta$ and $\gamma$ the rates of infection and recovery respectively, the standard SIR model without vital dynamics (birth and death rates) is given as follows:
+The $SIR$ Model is a compartmental epidemiological model with three compartments (generally referred to as `states') related to an epidemic: {\it susceptible, infected} and {\it recovered.} We define $S(t)$ as the number of susceptible people (i.e. those who do not currently have but are able to contract the infection) at time $t$, $I(t)$ as the number of infected people (i.e. individuals who have the disease and are infectious) at time $t$ and finally $R(t)$ as the number of recovered people (i.e. those who have had the disease and subsequently recovered, granting them at least some level of immunity in certain contexts). For a fixed population $N$, we have that $S(t) + I(t) + R(t) = N$ - that is, we assume a fixed population where we do not wish to consider vital dynamics, which is a reasonable assumption to make when an epidemic is short-lived. Then, for $\beta$ and $\gamma$ the rates of infection and recovery respectively, the standard SIR model without vital dynamics (birth and death rates) is given as follows \cite{hethcote_00}:
 
 \begin{align}
-\frac{dS}{dt} & = -\beta \frac{SI}{N} \label{dS}\\
-\frac{dI}{dt} & = \beta\frac{SI}{N} \gamma I \label{dI}\\
-\frac{dR}{dt} & = \gamma I - \mu R \label{dR}
+\frac{dS}{dt} & = -\beta \frac{SI}{N} \label{dS},\\
+\frac{dI}{dt} & = \beta\frac{SI}{N} \gamma I \label{dI},\\
+\frac{dR}{dt} & = \gamma I - \mu R \label{dR}.
 \end{align}
 
 %We generally aren't much interested in the expression for $\dot{\langle R \rangle}$, since we require that $ \dot{\langle S \rangle} + \dot{\langle I \rangle} + \dot{\langle R \rangle} = 1$ meaning we can always find the third probability as the compliment of the sum of the other two probabilities. In much of the literature, the convention is for this reason to only give the first two equations.
