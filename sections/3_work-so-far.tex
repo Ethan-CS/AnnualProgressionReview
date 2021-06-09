@@ -82,6 +82,7 @@ Note that the reason we dispense with the cases of all three vertices being in t
 We have been working on an implementation of the above work in equations generation. Our goal is to produce code that can accept a particular graph, for instance as a CSV file, and determine the number of equations that could be required to fully describe a compartmental model (for instance, $SIR$ or $SIRP$) on that graph. This could be by providing an upper and a lower bound, if the exact graph structure is unknown, or by providing the exact number of equations if the graph is small enough for this to be exactly calculated. Then, with this information, the user can then request the software prints the full list of differential equations that exactly describe the epidemic dynamics using an algorithmic approach to generation. This work is not currently completed, but we aim to have completed this in the coming months when the nuances of closures is fully understood and algorithmically implemented.
 
 \subsection{Uses of Percolation in The Firefighter Problem}
+\label{subsec:perc-fire}
 
 We have identified three main avenues that we would like to explore further regarding the use of Percolation Theory in {\scshape Firefighter}: 
 \begin{itemize}
