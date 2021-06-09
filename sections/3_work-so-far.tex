@@ -5,9 +5,9 @@
 
 \subsection{Agency-oriented modelling}
 
-One of the key deficiencies in existing approaches to compartmental models of disease, as described in Section \ref{sec:lit}, is the lack of agency in individuals. To address this, we have designed and implemented (in Java) a compartmental graph model of infectious disease.
+One of the key deficiencies in existing approaches to compartmental models of disease, as described in Section \ref{sec:lit}, is the lack of agency in individuals. By agency, we mean the ability of an individual to make decisions and choose to pursue them. In our context of disease modelling, agency might manifest in a modelled individual's capacity to make decisions about mitigating their own risk of contracting the infection (given the extent to which they are able to do so). To address this, we have designed and implemented a compartmental graph model of infectious disease, which notably includes associating with each individual a `defence rating,' which is a probability corresponding to their internal inclination towards self-protection (which also accounts for external constraints, for instance whether their circumstances mandate increased social contact).
 
-In our implemented model, we begin with a graph. This graph has a particular number of vertices and edges and can be generated using code we have written for several random graph types, for instance Erd\H{o}s R\'{e}nyi random graphs and Barab\'{a}si–Albert-generated preferential attachment graphs.
+In our implemented model, we begin with a graph on a particular number of vertices and edges. This can be either given by the user or generated using code we have written for several random graph types.
 
 \begin{figure}[!ht] 
 \begin{centering}
@@ -32,9 +32,11 @@ In our implemented model, we begin with a graph. This graph has a particular num
   \label{fig:defence}
 \end{figure}
 
-We then assign an agent to each vertex. Agents can be in a number of states, such as `susceptible' (could contract), `infected' (currently has the infection and is infectious), `recovered' (previously had the infection) and `protected' (cannot contract the infection). The final protection-related agent attribute is where much of our work has been focused: we study the dynamics of the system with this state using the `protection ratings' of vertices. For context, in some infection scenarios this may correspond to how strict the person is with mitigating behaviours to avoid contracting a disease such as hand hygiene, personal protective equipment usage and so on. We currently assign this rating in one of three ways: purely randomly, based upon proximity to infection or a combination of the two approaches.
+We then assign an agent to each vertex. Agents can be in a number of states, such as `susceptible' (could contract), `infected' (currently has the infection and is infectious), `recovered' (previously had the infection) and `protected' (cannot contract the infection). The latter of these state is where much of our work has been focused: we have been studying the dynamics of the system with this state using the `protection ratings' of vertices. We currently assign this rating in one of three ways: purely randomly, based upon proximity to infection or a combination of the two approaches. Figure \ref{fig:agent} shows how each agent is initialised and Figure \ref{fig:protection} shows in particular how such agents have their protection ratings assigned.
 
-Once these agents are initialised, an outbreak (source) vertex is selected from the graph and the agent at that location is moved to the `infected' compartment of the model. Then, a defensive move is made, which is adapted to account for the inherent individual protection ratings. Currently, there are three main defence strategies that are deployed.
+Once these agents are initialised, a defensive move is made, which is adapted to account for the inherent individual protection ratings. The current existing defence strategies are detailed in Figure \ref{fig:defence}. Currently, there are three main defence strategies that are deployed.
+
+%%%%%% ADD RESULTS IN HERE
 
 \subsection{Graph-based compartmental models}
 
