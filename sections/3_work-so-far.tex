@@ -5,46 +5,83 @@
 
 \subsection{Agency-oriented modelling}
 
-One of the key deficiencies in existing approaches to compartmental models of disease, as described in Section \ref{sec:lit}, is the lack of agency in individuals. By agency, we mean the ability of an individual to make decisions and choose to pursue them. In our context of disease modelling, agency might manifest in a modelled individual's capacity to make decisions about mitigating their own risk of contracting the infection (given the extent to which they are able to do so). To address this, we have designed and implemented a compartmental graph model of infectious disease, which notably includes associating with each individual a `defence rating,' which is a probability corresponding to their internal inclination towards self-protection (which also accounts for external constraints, for instance whether their circumstances mandate increased social contact).
+One of the key deficiencies in existing approaches to compartmental models of disease, as described in Section \ref{sec:lit}, is the lack of agency in individuals. By agency, we mean the ability of an individual to make decisions and choose to pursue them. In our context of disease modelling, agency might manifest in a modelled individual's capacity to make decisions about mitigating their own risk of contracting the infection (given the extent to which they are able to do so). To address this, we have designed and implemented a compartmental graph model of infectious disease, which notably includes associating with each individual a `defence rating,' which is a probability corresponding to their internal inclination towards self-protection (which also accounts for external constraints, for instance whether their circumstances mandate increased social contact). In this section, we first describe the implementation carried out so far before discussing the initial results obtained. We will then discuss the conference at which we presented some of these results and the significance of the approach employed.
+
+\subsubsection{Implementation of agency-based models}
 
 In our implemented model, we begin with a graph on a particular number of vertices and edges. This can be either given by the user or generated using code we have written for several random graph types.
 
 \begin{figure}[!ht] 
-\begin{centering}
-  \begin{subfigure}{0.4\linewidth}
-    \centering
-    \includegraphics[width=0.9\linewidth]{assets/agent-initialisation}
-    \caption{Agency initialisation}
-    \label{fig:agent}
-  \end{subfigure}%% 
-  \begin{subfigure}{0.6\linewidth}
-    \centering
-    \includegraphics[width=0.9\linewidth]{assets/protection}
-    \caption{Protection allocation}
-    \label{fig:protection}
-  \end{subfigure} 
-\end{centering}
-\end{figure}
-\begin{figure}[!ht]
   \centering
-  \includegraphics[scale=0.4]{assets/defence}
-  \caption{Defence strategies}
-  \label{fig:defence}
+  \includegraphics[width=0.75\linewidth]{assets/protection}
+  \caption{Visualisation of protection allocation - this is allocated either based on proximity to infection, randomly or by combination of both.}
+  \label{fig:protection}
 \end{figure}
 
 We then assign an agent to each vertex. Agents can be in a number of states, such as `susceptible' (could contract), `infected' (currently has the infection and is infectious), `recovered' (previously had the infection) and `protected' (cannot contract the infection). The latter of these state is where much of our work has been focused: we have been studying the dynamics of the system with this state using the `protection ratings' of vertices. We currently assign this rating in one of three ways: purely randomly, based upon proximity to infection or a combination of the two approaches. Figure \ref{fig:agent} shows how each agent is initialised and Figure \ref{fig:protection} shows in particular how such agents have their protection ratings assigned.
 
 Once these agents are initialised, a defensive move is made, which is adapted to account for the inherent individual protection ratings. The current existing defence strategies are detailed in Figure \ref{fig:defence}. Currently, there are three main defence strategies that are deployed.
 
-%%%%%% ADD RESULTS IN HERE
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.75\linewidth]{assets/defence}
+  \caption{Representation of three implemented defence strategies.}
+  \label{fig:defence}
+\end{figure}
+
+The defence strategies are represented visually in Figure \ref{fig:defence}. These strategies are:
+\begin{itemize}
+	\item Defend based on highest degree, breaking ties on greatest proximity to infection;
+	\item Defend based on greatest proximity to infection, break ties on highest degree; and
+	\item Defend the agents who currently have the highest protection rating.
+\end{itemize}
+The first two of these strategies are common in classic {\scshape Firefighter} - defending based on degree is effective in fairly dense graphs and defending based on proximity to fire is effective in sparse and tree-like graphs \cite{finbow_2009}.
+
+\begin{figure}[!ht] 
+  \begin{centering}
+    \begin{subfigure}{0.6\linewidth}
+      \centering
+	  \includegraphics[width=0.95\textwidth]{charts/percent_infected/Deterministic.jpg}
+	  \caption{Protection ratings allocated based on proximity to closest infection.}
+      \label{fig:det-result}
+    \end{subfigure}\\
+    \begin{subfigure}{0.6\linewidth}
+      \centering
+      \includegraphics[width=0.95\textwidth]{charts/percent_infected/Mixed.jpg}
+	  \caption{Protection rating allocated using a baseline random number which is increased based on proximity to closest infection.}
+      \label{fig:mix-result}
+    \end{subfigure}\\
+    \begin{subfigure}{0.6\linewidth}
+      \centering
+      \includegraphics[width=0.95\textwidth]{charts/percent_infected/Random.jpg}
+	  \caption{Protection rating allocated randomly.}
+      \label{fig:ran-result}
+    \end{subfigure}\\
+  \end{centering}
+  \caption{Charts showing percentage of Erd\"{o}s R\'{e}nyi graphs generated with varying probability $p$ infected with agent protection ratings allocated in three different ways}
+\end{figure}
+
+
+\subsubsection{Computational Biology Conference}
+
+On $27^{\text{th}}$ May 2021, we presented a talk on agency-oriented modelling to the First University of Glasgow Computational Biology Conference. The title of the talk was {\it introducing features of agency into computational models of infectious disease.} The key points of discussion were:
+\begin{itemize}
+\item Current computational approaches to graph models of disease
+\item Extending existing graph models to better account for individual agency
+\item Introducing a compartmental modelling approach
+\end{itemize} 
+
+%%%%%
 
 \subsection{Graph-based compartmental models}
 
-In this section, we will detail and explain the work we have done in extending the work outlined in Section \ref{subsec:SIR-lit}. We begin by exploring the addition of a new compartmental state to a graph-based $SIR$ model and then we determine the impact this has on the total system of equations describing these models.
+In this section, we will detail and explain the work we have done in extending the work outlined in Section \ref{subsec:SIR-lit}. We begin by exploring the addition of a new compartmental state to a graph-based $SIR$ model and then we determine the impact this has on the total system of equations describing these models. The main focus of our work so far in this area has been to develop an algorithmic approach for the work detailed in \cite{kiss_2014} (discussed in Section \ref{subsec:SIR-lit}), which the authors of that work left as an open problem.
 
 \subsubsection{Adding a new state to the model}
 
-Let $\zeta_i$ be the probability that we defend individual $i$. This can be determined in a number of different ways and we propose that a good candidate for this would be an algorithmic approach.\footnote{That is, determine the best candidates for defence each turn and distribute some given probability across them by the expected benefit in containing the infection gained by defending each vertex.} Similarly, let $\alpha_i$ represent the efficacy of the protection measure for individual $i$, which may decay over time and vary from person to person. Using these rates of protection and effectiveness, for fixed population size the differential equations become:
+Let $\zeta_i$ be the probability that we defend individual $i$.
+%This can be determined in a number of different ways and we propose that a good candidate for this would be an algorithmic approach.\footnote{That is, determine the best candidates for defence each turn and distribute some given probability across them by the expected benefit in containing the infection gained by defending each vertex.}
+Similarly, let $\alpha_i$ represent the efficacy of the protection measure for individual $i$, which may decay over time and vary from person to person. Using these rates of protection and effectiveness, for fixed population size the differential equations become:
 \begin{align}
 \dot{\langle S_i \rangle} & = \alpha_i \langle P_i \rangle - \sum^{N}_{j=1}T_{ij} \langle S_i I_j \rangle - \zeta_i\langle S_i \rangle\\
 \dot{\langle I \rangle} & =\sum^{N}_{j=1}T_{ij}\langle S_i I_j \rangle - \gamma_i \langle I \rangle \\
@@ -81,7 +118,7 @@ Note that the reason we dispense with the cases of all three vertices being in t
 \subsubsection{Implementation}
 \label{subsubsec:implementation}
 
-We have been working on an implementation of the above work in equations generation. Our goal is to produce code that can accept a particular graph, for instance as a CSV file, and determine the number of equations that could be required to fully describe a compartmental model (for instance, $SIR$ or $SIRP$) on that graph. This could be by providing an upper and a lower bound, if the exact graph structure is unknown, or by providing the exact number of equations if the graph is small enough for this to be exactly calculated. Then, with this information, the user can then request the software prints the full list of differential equations that exactly describe the epidemic dynamics using an algorithmic approach to generation. This work is not currently completed, but we aim to have completed this in the coming months when the nuances of closures is fully understood and algorithmically implemented.
+We have been working on an implementation of the above work in equations generation. Our goal is to produce code that can accept a particular graph, for instance as a CSV file, and determine the number of equations that could be required to fully describe a compartmental model (for instance, $SIR$ or $SIRP$) on that graph. This could be by providing upper and lower bounds if the exact graph structure is unknown, or by providing the exact number of equations if the graph is known. With this information, the user can request the software returns the full list of differential equations that exactly describe the epidemic dynamics using an algorithmic approach to generation.
 
 \subsection{Uses of Percolation in The Firefighter Problem}
 \label{subsec:perc-fire}
@@ -104,7 +141,7 @@ The first of these options might be used when the firefighter can save more than
 
 \subsubsection{Better than random}
 
-One potential use for the firefighter using percolation as a method of defence would be as a baseline test: in most scenarios, a method for obtaining defence strategies should be at least as effective as a random defence sequence. We could find such a random sequence using percolation for comparison purposes. Consider a sequence of vertices in graph $G$, written as $d_1, d_2,\dots, d_t$. An optimal defence sequence could be found using integer programming as provided by Finbow and MacGillivray \cite{finbow_2009}:
+One potential use of percolation is a baseline test. In most scenarios, a method for obtaining defence strategies should be at least as effective as a random defence sequence. We could find such a random sequence by allowing the firefighter to defend in a percolation-like strategy for comparitive purposes. Consider a sequence of vertices in graph $G$, written as $d_1, d_2,\dots, d_t$. An optimal defence sequence could be found using integer programming as provided by Finbow and MacGillivray \cite{finbow_2009}:
 \begin{equation*}
 	\begin{array}{ll@{}ll}
 \text{Maximise}  & \displaystyle \sum\limits_{v\in V(G)} d_v w(v) &\text{~for each level~} i\\
@@ -115,7 +152,7 @@ One potential use for the firefighter using percolation as a method of defence w
 \end{equation*}
 where $u\succ v$ indicates that $u$ is an ancestor of $v$. The optimal strategies provided for different classes and densities of graphs here will provide an upper bound (which may indeed be impossible to attain in some cases) for success of a given strategy. We can find a lower bound using percolation, and so we have a range of success values as a starting point: if some strategy is better than random percolation, then it is worth considering, but below the particular expected optimal solution from integer programming and we can, in principle, improve or find a better strategy.
 
-We conjecture that, at the lowest graph densities, the random strategy will be very close to the optimal strategy and thus finding an improvement is at once difficult and lacking in great utility. At the very highest graph densities, while random strategies will have a very low expected best-case scenario, as will most strategies as the constraint on the firefighter that they have only one vertex to save per turn does not go as far when vertices are much better connected. Thus, finding improvements on random will again not prove very useful as random and best-case scenarios serve to show us that there is a small range of possible, not good outcomes.
+We conjecture that, at the lowest graph densities, the random strategy will be close to the optimal strategy and thus finding an improvement is at once difficult and lacking in great utility. At the very highest graph densities, random strategies will have a very low expected best-case scenario but so will most strategies, since the constraint on the firefighter that they have only one vertex to save per turn does not go as far towards fire containment per turn compared to sparser graphs.
 
 \subsubsection{Reproduction rate}
 
@@ -125,7 +162,7 @@ Where we wish to consider vertices as individuals and edges as the connections b
 
 \subsubsection{Irregular population density}
 
-A great deal of the literature surrounding {\scshape Firefighter} assumes a regular graph - that is, in the context of disease we assume a well-mixed population where everyone has equal probability of coming into contact with their neighbours. Of course, this is a significant simplification of reality: some individuals are very well connected and have lots of contact with others, whereas some people have significantly less contact with others. In the context of a forest fire, the density of a forest is irregular and there is a probability in the unit interval that fire can spread between two trees depending on their proximity (among other factors): an example of this can be seen in figure \ref{fig:largeperc}. Thus, percolation on regular grids to more closely resemble populations or forest density could lead to far more useful and realistic modelling results.
+A great deal of the literature surrounding {\scshape Firefighter} assumes a regular graph - that is, in the context of disease we assume a well-mixed population where everyone has equal probability of coming into contact with their neighbours. Of course, this is a simplification of reality: some individuals are very well connected and have lots of contact with others, and others have significantly less contact. In the context of a forest fire, the density of a forest is naturally irregular and there is a probability in the unit interval that fire can spread between two trees depending on their proximity (among other factors): an example of this can be seen in figure \ref{fig:largeperc}. Thus, percolation on regular grids to more closely resemble populations or forest density could lead to far more useful and realistic modelling results. If we start models on graphs which have been percolated with some given probability, we can ensure the model better resembles the density and irregularity of a natural population. 
 
 \begin{figure}[!ht] 
 \begin{centering}
@@ -160,7 +197,7 @@ A great deal of the literature surrounding {\scshape Firefighter} assumes a regu
   \end{centering}
 \end{figure}
 
-To illustrate this idea, we will consider a similar (perhaps precursor) to {\scshape Firefighter}, called The Firebreak Problem or simply {\scshape Firebreak}. Rather than have a firefighter reactively combatting the fire on each turn, we begin with an allocated amount of funding with which to mitigate the expected damage of the fire, and spend all of that before the fire begins. Generally, this means we have a number of edges to remove (trees to cut down or place a barrier in between) before the fire begins. Figure \ref{fig:percolated_graph} depicts the use of percolation on a graph to model a forest fire. We can see that the model would have little utility if we began the outbreak on the graph in \ref{fig:original} (all of the graph would be burnt), but percolation has made this a more instructive and realistic model in figure \ref{fig:afterperc}. We can see where the fire has spread in \ref{fig:end}, and we can see where - if we had a finite amount of resources - we must focus our efforts and funding in introducing a firebreak.
+To illustrate this idea, we will consider a similar problem to {\scshape Firefighter}, called The Firebreak Problem or simply {\scshape Firebreak}. Rather than have a firefighter reactively combatting the fire on each turn, we begin with an allocated amount of funding with which to mitigate the expected damage of the fire, and spend all of that before the fire begins. Generally, this means we have a number of edges to remove (trees to cut down or place a barrier in between) before the fire begins. Figure \ref{fig:percolated_graph} depicts the use of percolation on a graph to model a forest fire. We can see that the model would have little utility if we began the outbreak on the graph in \ref{fig:original} (all of the graph would be burnt), but percolation has made this a more instructive and realistic model in figure \ref{fig:afterperc}. We can see where the fire has spread in \ref{fig:end}, and we can see where - if we had a finite amount of resources - we must focus our efforts and funding in introducing a firebreak.
 
 \begin{figure}[ht] 
 \begin{centering}
@@ -189,6 +226,8 @@ To illustrate this idea, we will consider a similar (perhaps precursor) to {\scs
   \end{centering}
 \end{figure}
 
-If, for instance, we could only remove two vertices as a firebreak, we ought to make those three the ones shown in yellow in figure \ref{fig:percolated_defended}. This is an example of how percolating a graph for use in {\scshape Firefighter} (and indeed {\scshape Firebreak}) can assist in generating a more realistic and useful model for contagion. There is much interest in the regular graph examples, but our modelling contexts of interest call for a more sporadic graph density and so we, in future research, will try and prove conjectures regarding the minimum number of vertex defences required in {\scshape Firebreak} for percolated graphs of given percolation threshold and dimension (or infinite graphs) and analogous questions in {\scshape Firefighter}.
+If, for instance, we could only remove two vertices as a firebreak, we ought to make those two the ones shown in yellow in figure \ref{fig:percolated_defended}. This is an example of how percolating a graph for use in {\scshape Firefighter} (and indeed {\scshape Firebreak}) can assist in generating a more realistic and useful model for contagion. There is much interest in the regular graph examples, but our modelling contexts of interest call for a more sporadic graph density and so we, in future research, will try and prove conjectures regarding the minimum number of vertex defences required in {\scshape Firebreak} for percolated graphs of given percolation threshold and dimension (or infinite graphs) and analogous questions in {\scshape Firefighter}.
+
+These random graphs are very reminiscent of Erd\"{o}s R\'{e}nyi random graphs and this is for good reason. In fact, the Erd\"{o}s R\'{e}nyi process of graph generation - adding edges into a graph with some given probability $p$ - can be thought of as bond percolation on the complete graph with probability $1-p$.
 
 \end{document}
