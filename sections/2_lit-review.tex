@@ -50,13 +50,11 @@ In this discussion, we will begin by discussing the standard $SIR$ model, allowi
 
 The $SIR$ Model is a compartmental epidemiological model with three compartments (generally referred to as `states') related to an epidemic: {\it susceptible, infected} and {\it recovered.} We define $S(t)$ as the number of susceptible people (i.e. those who do not currently have but are able to contract the infection) at time $t$, $I(t)$ as the number of infected people (i.e. individuals who have the disease and are infectious) at time $t$ and finally $R(t)$ as the number of recovered people (i.e. those who have had the disease and subsequently recovered, granting them at least some level of immunity in certain contexts). For a fixed population $N$, we have that $S(t) + I(t) + R(t) = N$ - that is, we assume a fixed population where we do not wish to consider vital dynamics, which is a reasonable assumption to make when an epidemic is short-lived. Then, for $\beta$ and $\gamma$ the rates of infection and recovery respectively, the standard SIR model without vital dynamics (birth and death rates) is given as follows \cite{hethcote_00}:
 
-\begin{align}
-\frac{dS}{dt} & = -\beta \frac{SI}{N} \label{dS},\\
-\frac{dI}{dt} & = \beta\frac{SI}{N} \gamma I \label{dI},\\
-\frac{dR}{dt} & = \gamma I - \mu R \label{dR}.
-\end{align}
-
-%We generally aren't much interested in the expression for $\dot{\langle R \rangle}$, since we require that $ \dot{\langle S \rangle} + \dot{\langle I \rangle} + \dot{\langle R \rangle} = 1$ meaning we can always find the third probability as the compliment of the sum of the other two probabilities. In much of the literature, the convention is for this reason to only give the first two equations.
+\begin{align*}
+\frac{dS}{dt} & = -\beta \frac{SI}{N},\\
+\frac{dI}{dt} & = \beta\frac{SI}{N} \gamma I,\\
+\frac{dR}{dt} & = \gamma I - \mu R.
+\end{align*}
 
 \subsubsection{Extending the $SIR$ model to graphs}
 
@@ -72,14 +70,7 @@ which are the evolution equations given in \cite{kiss_2014}.
 
 In the past year, we have also spent significant time understanding, applying and expanding results around equations describing Markovian $SIR$ graph models of disease exactly \cite{kiss_2014} so we will now provide a review of the key work in this area and its utility. We will go on to detail the work done so far in extending the results from this paper in the following section.
 
-In \cite{kiss_2014}, the authors note that there are generally three approaches to compartmental models of disease. We can:
-\begin{enumerate}
-	\item Take averages at population level, 
-	\item Maintain a probabilistic view by considering the full state space, or
-	\item Begin modelling at the level of vertices and build up to larger structures from there.
-\end{enumerate}
-
-The second of these three describes the approach we have taken to our work so far, as will be seen in Section \ref{sec:work}. The latter of these three approaches is the one used in the work on Markovian SIR graph epidemics being discussed currently: begin by considering equations for single vertices, then consider dependencies on pairs, then triples and so on until we reach the full system size. Such equations are well defined and consistent, which is not difficult to see.
+In \cite{kiss_2014}, the authors note that there are generally three approaches to compartmental models of disease. We can take averages at population level, maintain a probabilistic view by considering the full state space, or begin modelling at the level of vertices and build up to larger structures from there. The second of these three describes the approach we have taken to our work so far, as will be seen in Section \ref{sec:work}. The latter of these three approaches is the one used in the work on Markovian SIR graph epidemics being discussed currently: begin by considering equations for single vertices, then consider dependencies on pairs, then triples and so on until we reach the full system size. Such equations are well defined and consistent, which is not difficult to see.
 
 The work done in \cite{kiss_2014} has two goals. Firstly, the authors aim to provide an exact, deterministic representations of Markovian $SIR$ epidemics on graphs with and without loops. Secondly, they seek to identify a link between the structural properties of the graphs and the viability of closures that can be used to write down exact systems of equations that can be numerically evaluated. In particular, the authors show this structural link is founded on cut-vertices and bridges. Cut-vertices are vertices that, if removed from a connected graph, result in the formation of two (or more) disconnected sub-graphs.
 
@@ -113,8 +104,6 @@ where $P$ is the number of distinct sub-graphs produced when the original graph 
 
 In their concluding remarks, the authors recommend the implementation of an algorithmic approach to this equations generation with closure detection as the examples provided in their work were done by hand \cite{kiss_2014}. This is something we have been working on for several months, which will be discussed in Section \ref{subsubsec:implementation}. 
 
-%This takes a sum across the number of equations for all sub-graphs and adjusts to account for unnecessary multiplications caused by cut-vertices being part of multiple sub-graphs, which is a move made in illustrative examples throughout the work.
-
 %%%%%%%%%%
 
 \subsection{Percolation Theory}
@@ -123,12 +112,6 @@ In their concluding remarks, the authors recommend the implementation of an algo
 Widely known and used in physics, statistics and mathematics, Percolation theory involves modelling scenarios as $n$-dimensional graphs, so application to {\scshape Firefighter} is not entirely unexpected. We now examine percolation theory and later, in Section \ref{subsec:perc-fire}, explain the utility we have found it may yield in extending and expanding modelling work from {\scshape Firefighter}.
 
 In percolation, the edges between vertices in the graph can be either `open' or `closed' with probability $p$ and $1-p$ respectively. We can think of percolation problems as liquid being poured onto a porous material and whether there is a path from hole to hole along open paths through the material. Note that removing more and more edges moves us towards a critical point at which removing further edges would cause the graph to fall apart into smaller clusters of vertices and edges that have no access to each other \cite{grimmett_1999}. This is known as `bond' percolation, as edges correspond to bonds in many of its applications.
-%\begin{figure}[ht]
-%	\centering
-%		\includegraphics[width=0.45\linewidth]{percolated-graph.jpg}
-%	\caption{A graph that has been subject to percolation.}
-%	\label{fig:percolated-graph}
-%\end{figure}
 
 Several authors have suggested percolation as a possible approach to {\scshape Firefighter} \cite{finbow_2009}. In this context, we could determine the critical point to see how we might contain the fire to a smaller cluster that cannot spread to the wider graph. For {\scshape Firefighter}, site percolation is more applicable: rather than considering open or closed \emph{edges} (`bonds') between vertices as in bond percolation, we consider each \emph{vertex} (`site') as being `occupied' or `unoccupied' with probability $p$ and $1-p$ respectively.
 
@@ -140,7 +123,7 @@ and the \emph{critical probability} (or \emph{percolation threshold}):
 $$
 p_c = \sup\{\,p \mid \theta(p)=0\,\}.
 $$
-Here, $\mathbb{P}_p$ is the product measure given by:
+where $\mathbb{P}_p$ is the product measure given by
 $$
 \displaystyle \mathbb{P}_p=\prod_{v\in\mathbb{L}^d}\mu_v
 $$
