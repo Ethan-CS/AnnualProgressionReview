@@ -5,17 +5,15 @@
 
 \subsection{Context}
 
-To better understand the relevance of the following literature review, we first provide a brief overview of where the concepts to follow fit into our work so far, beginning with the Firefighter Problem and how it can be adapted to a rudimentary model of disease. A huge amount of our research (particularly the experimental strand) has started with this problem as its foundation; in Section \ref{sec:work}, we will explain the ways we have extended the classic problem in stochastic and game-theoretic directions.
+To better understand the relevance and significance of this literature review, we first provide a brief overview of where the concepts that will be outlined fit into our work so far. We begin with the Firefighter Problem and how it can be adapted to a rudimentary model of disease: a huge amount of our research (particularly the experimental strand) has started with this problem as its foundation; in Section \ref{sec:work}, we explain the ways we have extended the classic problem in stochastic and game-theoretic directions.
 
-We then move on to discuss compartmental graph models of disease, examining the differential equations required to describe such models exactly. This has formed the basis of our more formal work over the past year, so again a discussion of the results and knowledge in this field that pre-dates our work provides important background for Section \ref{sec:work}. While this work appears fairly distinct in character to the more experimental prong of our approach, the two aspects are related in principle: both aim to take existing approaches to disease modelling and introduce a new way of representing protection from disease, both as an external defence strategy and as an internal inclination in individuals.
+Further, we discuss compartmental graph models of disease, examining the differential equations required to describe such models exactly. This has formed the basis of our more formal work over the past year, so again a discussion of the results and knowledge in this field that pre-dates our work provides important background for Section \ref{sec:work}. While this work appears fairly distinct in character to the more experimental prong of our approach, in principle both methods aim to take existing approaches to disease modelling and introduce a new way of representing protection from disease, both as an external defence strategy and as an internal inclination in individuals.
 
 We end this section with a discussion of Percolation Theory and its use in a graph-theoretic context. We have identified this as an important tool for disease modelling using graphs, but we have not yet employed it to a significant extent. We will, nonetheless, discuss the areas that we believe it will prove useful in Section \ref{sec:work}.
 
 \subsection{The Firefighter Problem}
 
-The Firefighter Problem, which we refer to as simply {\scshape Firefighter}, was first introduced by Hartnell \cite{hartnell_1995} and models on a given graph an outbreak of fire with a firefighter strategically blocking its path.
-
-We formalise {\scshape Firefighter} as follows: at $t=0$, a fire breaks out at some vertex $v_0$ of graph $G$. The firefighter then `protects' another vertex of $G$. A protected vertex is protected for the remainder of the game. Similarly, a vertex that is on fire is `burning' for the rest of the game and cannot ignite again. The fire spreads to any immediate neighbouring vertices that are neither protected nor burnt. Then, the firefighter may protect another vertex, the fire spreads again and so on. The following is a decision formulation given by Finbow and MacGillivray for {\scshape Firefighter} \cite{finbow_2009}:
+The Firefighter Problem, which we refer to as simply {\scshape Firefighter} models on a given graph an outbreak of fire with a firefighter strategically blocking its path \cite{hartnell_1995}. We formalise {\scshape Firefighter} as follows: at $t=0$, a fire breaks out at a vertex $v_0$ of graph $G$. The firefighter then `protects' another vertex of $G$. A protected vertex is protected for the remainder of the game and a vertex that is on fire is `burning' for the rest of the game. The fire now spreads to any adjacent vertices that are neither protected nor burnt. After that, the firefighter protects another vertex, the fire spreads again and so on. The following is a decision formulation given by Finbow and MacGillivray for the problem \cite{finbow_2009}:
 \vspace{1mm}
 
 \begin{center}
@@ -33,23 +31,33 @@ We formalise {\scshape Firefighter} as follows: at $t=0$, a fire breaks out at s
 }%
 \end{center}
 
-Common problems in classic {\scshape Firefighter} often involve how to minimise the number of vertices that will be burnt and, in a given class of trees, determining the average number of burnt vertices. There are several results available to us in classic {\scshape Firefighter} - for one, the decision problem is NP-complete, even if restricted to trees with maximum degree three. Further, the problem is solvable in polynomial time for graphs of maximum degree three, so long as the fire starts at a vertex of degree two \cite{finbow_2009}. We also have some results regarding game strategies, such as that the greedy algorithm is a $1/2$-approximation for the problem on trees \cite{finbow_2009}.
+Common problems in classic {\scshape Firefighter} often involve minimising the number of vertices that will be burnt and, in a given class of trees, determining the average number of burnt vertices. There are several results available to us in classic {\scshape Firefighter} - for one, the decision problem is NP-complete, even if restricted to trees with maximum degree three. Further, the problem is solvable in polynomial time for graphs of maximum degree three, so long as the fire starts at a vertex of degree two \cite{finbow_2009}. We also have some results regarding game strategies: for instance, the greedy algorithm is a $1/2$-approximation for the problem on trees \cite{finbow_2009}.
 
-If we let each vertex be an individual and edges between them represent social contact, we reach a simple model for disease infection, which is where our interest in the game enters. We note that are many natural contextualisations of {\scshape Firefighter} beyond modelling disease spread, which we may choose to apply our work to in future - for instance, we may think of edges representing virtual contact between individuals on social media, yielding a model for the spread of viral internet memes \cite{obrien_2019}.
+If we let each vertex represent an individual and edges between them represent social contact, we obtain a simple model for disease infection. There are many natural contextualisations of {\scshape Firefighter} beyond modelling disease spread, which we may choose to apply our work to in future - for instance, we may think of edges representing virtual contact between individuals on social media, yielding a model for the spread of viral internet memes \cite{obrien_2019}.
 
 %%%%%%%%%%
 
-\subsection{Markovian SIR epidemics on networks}
+\subsection{Markovian $SIR$ epidemics on networks}
 \label{subsec:SIR-lit}
 
-Compartmental models are mathematical ways of simulating how sections of a population interact. This involves systems of equations describing the behaviour of each compartment and then seeing how each compartment interacts with the others. These compartments can describe many states an individual (typically a person or an animal) can be in - for instance, we could use predator/prey compartments to simulate a hunting situation or susceptible/infected/recovered compartments to model disease spread. 
-
-In this discussion, we will begin by discussing the standard $SIR$ model, allowing us to later explain how it can be extended to a graph-theoretic context and then explain the current work on generating a system of equations to exactly describe such a model. The work detailed here on Markovian $SIR$ epidemic graph models is hugely foundational for our formal approach to research so far.
+\begin{definition}{Compartmental models.}
+Mathematical ways of simulating how sections of a population interact, usually involving systems of equations describing the behaviour of each compartment and then studying how compartments interact with each other. 
+\end{definition}
+The states in a compartmental model can describe many states an individual (typically a person or an animal) can be in. For instance, predator/prey compartments can simulate a hunting situation and susceptible/infected/recovered compartments may model disease spread - the latter of these examples is the $SIR$ model. In this discussion, we begin by detailing this model so we can later explain how it can be extended to a graph-theoretic context and understand the generation of systems of equations to exactly describe such models. The work detailed here on Markovian $SIR$ epidemic graph models from \cite{kiss_2014} is hugely foundational for our formal work so far. In this work, the authors note that there are generally three approaches to compartmental models of disease: we can take averages at population level, maintain a probabilistic view by considering the full state space, or begin modelling at the level of vertices and build up to larger structures from there. The second of these three describes the approach we have taken to our work so far, as will be seen in Section \ref{sec:work} and the latter of these three approaches is the one used in the work on Markovian $SIR$ graph epidemics we are now focusing on. Broadly, their approach begins by considering equations for single vertices, then dependencies on pairs, then triples and so on until we reach the full system size. Such equations are well defined and consistent, which is not difficult to see \cite{kiss_2014}.
 
 \subsubsection{Standard $SIR$ model with fixed population}
 
-The $SIR$ Model is a compartmental epidemiological model with three compartments (generally referred to as `states') related to an epidemic: {\it susceptible, infected} and {\it recovered.} We define $S(t)$ as the number of susceptible people (i.e. those who do not currently have but are able to contract the infection) at time $t$, $I(t)$ as the number of infected people (i.e. individuals who have the disease and are infectious) at time $t$ and finally $R(t)$ as the number of recovered people (i.e. those who have had the disease and subsequently recovered, granting them at least some level of immunity in certain contexts). For a fixed population $N$, we have that $S(t) + I(t) + R(t) = N$ - that is, we assume a fixed population where we do not wish to consider vital dynamics, which is a reasonable assumption to make when an epidemic is short-lived. Then, for $\beta$ and $\gamma$ the rates of infection and recovery respectively, the standard SIR model without vital dynamics (birth and death rates) is given as follows \cite{hethcote_00}:
-
+The $SIR$ Model is a compartmental epidemiological model with the following three states.
+\begin{definition}{Susceptible.}
+An individual who does not currently have but could contract the contagion.
+\end{definition}
+\begin{definition}{Infected.}
+An individual who currently has the contagion and is infectious.
+\end{definition}
+\begin{definition}{Recovered.}
+An individual who previously had the contagion and subsequently recovered, possibly granting them some level of immunity in certain contexts.
+\end{definition}
+We define $S(t), I(t)$ and $R(t)$ as the numbers of susceptible, infected and recovered people (all at time $t$) respectively. For a fixed\footnote{A fixed population is a reasonable assumption where an epidemic is short-lived.} population $N$, we specify that $S(t) + I(t) + R(t) = N$. Then, for $\beta$ and $\gamma$ the rates of infection and recovery respectively, the standard $SIR$ model without vital dynamics (birth and death rates) is given as follows \cite{hethcote_00}:
 \begin{align*}
 \frac{dS}{dt} & = -\beta \frac{SI}{N},\\
 \frac{dI}{dt} & = \beta\frac{SI}{N} \gamma I,\\
@@ -58,9 +66,9 @@ The $SIR$ Model is a compartmental epidemiological model with three compartments
 
 \subsubsection{Extending the $SIR$ model to graphs}
 
-In order to extend our SIR model to network graphs, we first examine the probability of an agent being in a given class: let $\langle A_i \rangle$ represent the time-independent probability of vertex $i$ being in state $A$, meaning that the expression of the form $\langle A_i B_j \rangle$ represents the probability of vertices $i$ and $j$ being in states $A$ and $B$ respectively \cite{kiss_2014}. We begin with a contact network, where vertices represent individuals and the edges between them represent social contact which may serve as an infection pathway. Then, the adjacency matrix $G$ of this network is constructed by assigning $G_{ij} = 1$ when $i$ and $j$ share an edge and $G_{ij} = 0$ otherwise.\footnote{Because we are infrequently interested in self-transmission, we often set $G_{ii}=0.$} Then, we extend this contact network to a transmission network: let $\beta_i$ represent the per-link infection rate for individual $i$ and $\gamma_i$ represent the recovery rate for $i$. For the transmission matrix $T,$ we assign $T_{ij}=\beta_i$ if there is a single-edge route of infection between $i$ and $j$ and $T_{ij}=0$ otherwise. Often, we will consider unweighted and undirected graphs, but in general $T_{ij}$ may not equal $T_{ji}$.
+In order to extend our $SIR$ model to graphs, we first examine the probability of an agent being in a given class. Let $\langle A_i \rangle$ represent the time-independent probability of vertex $i$ being in state $A$, so $\langle A_i B_j \rangle$ represents the probability of vertices $i$ and $j$ being in states $A$ and $B$ respectively \cite{kiss_2014}. We begin with a contact network, where vertices represent individuals and the edges between them represent social contact which may serve as an infection pathway. Then, the adjacency matrix $G$ of is constructed by assigning $G_{ij} = 1$ when $i$ and $j$ share an edge and $G_{ij} = 0$ otherwise.\footnote{Because we are infrequently interested in self-transmission, we often set $G_{ii}=0.$} Then, we extend this contact network to a transmission network: let $\beta_i$ represent the per-link infection rate for individual $i$ and $\gamma_i$ represent the recovery rate for $i$. For the transmission matrix $T$, we assign $T_{ij}=\beta_i$ if there is a single-edge route of infection between $i$ and $j$ and $T_{ij}=0$ otherwise. Often, we will consider unweighted and undirected graphs, but in general $T_{ij}$ may not equal $T_{ji}$.
 
-We now note that we can replace $\beta_i$ with a term involving such a transmission matrix of a network in order to begin extending the usual SIR model into a network realm. Using the substitution $ \beta_i \frac{SI}{N} = \sum^{N}_{j=1}T_{ij} \langle S_i I_j \rangle,$ the equations become
+We can replace $\beta_i$ with a term involving such a transmission matrix in order to begin extending the usual $SIR$ model into a network realm. Using the substitution $ \beta_i \frac{SI}{N} = \sum^{N}_{j=1}T_{ij} \langle S_i I_j \rangle,$ the equations become
 \begin{align*}
 \dot{\langle S_i \rangle} & = -\sum^{N}_{j=1}T_{ij} \langle S_i I_j \rangle\\
 \dot{\langle I_i \rangle} & =\sum^{N}_{j=1}T_{ij}\langle S_i I_j \rangle - \gamma_i \langle I \rangle \\
@@ -68,13 +76,10 @@ We now note that we can replace $\beta_i$ with a term involving such a transmiss
 \end{align*}
 which are the evolution equations given in \cite{kiss_2014}.
 
-In the past year, we have also spent significant time understanding, applying and expanding results around equations describing Markovian $SIR$ graph models of disease exactly \cite{kiss_2014} so we will now provide a review of the key work in this area and its utility. We will go on to detail the work done so far in extending the results from this paper in the following section.
-
-In \cite{kiss_2014}, the authors note that there are generally three approaches to compartmental models of disease. We can take averages at population level, maintain a probabilistic view by considering the full state space, or begin modelling at the level of vertices and build up to larger structures from there. The second of these three describes the approach we have taken to our work so far, as will be seen in Section \ref{sec:work}. The latter of these three approaches is the one used in the work on Markovian SIR graph epidemics being discussed currently: begin by considering equations for single vertices, then consider dependencies on pairs, then triples and so on until we reach the full system size. Such equations are well defined and consistent, which is not difficult to see.
-
-The work done in \cite{kiss_2014} has two goals. Firstly, the authors aim to provide an exact, deterministic representations of Markovian $SIR$ epidemics on graphs with and without loops. Secondly, they seek to identify a link between the structural properties of the graphs and the viability of closures that can be used to write down exact systems of equations that can be numerically evaluated. In particular, the authors show this structural link is founded on cut-vertices and bridges. Cut-vertices are vertices that, if removed from a connected graph, result in the formation of two (or more) disconnected sub-graphs.
+The work done in \cite{kiss_2014} has two goals. Firstly, the authors aim to provide an exact, deterministic representations of Markovian $SIR$ epidemics on graphs with and without loops. Secondly, they seek to identify a link between the structural properties of graphs and the viability of closures that can be used to write down exact systems of equations. In particular, the authors show this structural link is founded on cut-vertices. Cut-vertices are vertices that, if removed from a connected graph, result in the formation of at least two disconnected sub-graphs \cite{kiss_2014}.
 
 The significance of cut-vertices is that they permit us to create closures in the systems of equations that describe a compartmental model. To better explain closures, consider the equations below for calculating singles and pairs \cite{kiss_2014}:
+
 \begin{align*}
 \langle \dot{S_i} \rangle & = -\sum^N_{j=1}T_{ij}\langle S_iI_j\rangle,\\
 \langle\dot{I_i}\rangle & = \sum^N_{j=1}T_{ij}\langle S_iI_j\rangle - \gamma_i\langle I_i \rangle,\\
@@ -89,7 +94,7 @@ The main result of the work reveals an important relation between the structure 
 $$
 \langle Z_{v_1} Z_{v_2} \dots Z_{v_{i-1}} S_{v_{i^*}} Z_{v_{i+2}} \dots Z_{v_k} \rangle (t) = \frac{\langle Z_{v_1} Z_{v_2} \dots Z_{v_{i-1}} S_{v_{i^*}} \rangle (t) \langle S_{v_{i^*}} Z_{v_{i+2}} \dots Z_{v_k} \rangle (t)}{\langle S_{v_{i^*}} \rangle (t)},
 $$
-where in each $Z_{v_i}$ term, $Z$ may stand for any state symbol in our model (such as $S$ for susceptible, $P$ for protected and so on) for all vertices $v_i$ that are not cut-vertices.
+where in each $Z_{v_i}$ term, $Z$ may stand for any state symbol in our model (such as $S$ for susceptible, $P$ for protected and so on) for all vertices $v_i$ that are not cut-vertices \cite{kiss_2014}.
 
 The authors further prove an impressively general result: if a graph with $N$ vertices and  $E$ edges has $T$ triangles and no larger loops than size 3 (meaning also that triangles cannot have overlapping edges), an upper bound on the size of the system of equations describing the system dynamics can be calculated \cite{kiss_2014}:
 $$
@@ -109,24 +114,20 @@ In their concluding remarks, the authors recommend the implementation of an algo
 \subsection{Percolation Theory}
 \label{sec:perc}
 
-Widely known and used in physics, statistics and mathematics, Percolation theory involves modelling scenarios as $n$-dimensional graphs, so application to {\scshape Firefighter} is not entirely unexpected. We now examine percolation theory and later, in Section \ref{subsec:perc-fire}, explain the utility we have found it may yield in extending and expanding modelling work from {\scshape Firefighter}.
+Widely known and used in physics, statistics and mathematics, Percolation theory involves modelling scenarios as $n$-dimensional graphs, so our interest from a graph-theoretic perspective is not entirely unexpected. We now outline the relevant details of percolation theory and later, in Section \ref{subsec:perc-fire}, explain the utility we have found it may yield in extending and expanding modelling work from {\scshape Firefighter}.
 
-In percolation, the edges between vertices in the graph can be either `open' or `closed' with probability $p$ and $1-p$ respectively. We can think of percolation problems as liquid being poured onto a porous material and whether there is a path from hole to hole along open paths through the material. Note that removing more and more edges moves us towards a critical point at which removing further edges would cause the graph to fall apart into smaller clusters of vertices and edges that have no access to each other \cite{grimmett_1999}. This is known as `bond' percolation, as edges correspond to bonds in many of its applications.
-
-Several authors have suggested percolation as a possible approach to {\scshape Firefighter} \cite{finbow_2009}. In this context, we could determine the critical point to see how we might contain the fire to a smaller cluster that cannot spread to the wider graph. For {\scshape Firefighter}, site percolation is more applicable: rather than considering open or closed \emph{edges} (`bonds') between vertices as in bond percolation, we consider each \emph{vertex} (`site') as being `occupied' or `unoccupied' with probability $p$ and $1-p$ respectively.
+In percolation, the edges between vertices can be either `open' or `closed' with probability $p$ or $1-p$ respectively. This is known as `bond' percolation, as edges correspond to bonds in many of its applications - `site' percolation is roughly analogous, where vertices (rather than edges) can be either `occupied' or `unoccupied.' We can think of percolation problems as liquid being poured onto a porous material and whether there is a path from hole to hole along open paths through the material. Note that removing (or closing) more and more edges moves us towards a critical point at which removing further edges would ensure the graph must fall apart into smaller clusters of vertices and edges that have no access to each other \cite{grimmett_1999} - this is known as the {\it percolation threshold} or {\it critical probability}. 
 
 Formally, we consider a point lattice $\mathbb{L}$ and denote the open cluster as $C(x)\text{,~where~}x\in\mathbb{L}$ is the local origin of the cluster. This cluster $C(x)$ is defined as the set of all vertices that can be reached from open paths beginning at the nucleation site, $x$. Then, we are particularly interested in the \emph{percolation probability}:
 $$
 \theta(p) = \mathbb{P}_p(\,|C(0)|=\infty\,),
 $$
-and the \emph{critical probability} (or \emph{percolation threshold}):
+and the \emph{percolation threshold}:
 $$
 p_c = \sup\{\,p \mid \theta(p)=0\,\}.
 $$
 where $\mathbb{P}_p$ is the product measure given by
-$$
-\displaystyle \mathbb{P}_p=\prod_{v\in\mathbb{L}^d}\mu_v
-$$
-where $\mu_v$ is the \emph{Bernoulli measure}, which returns $p$ when $v$ is open and $1-p$ when $v$ is closed \cite[p. 28]{klenke_2014}. Analytically, others have shown that in the case of a two-dimensional regular point lattice, the critical probability is $p_c=1/2$ \cite{kersten_1980}.
+$\displaystyle \mathbb{P}_p=\prod_{v\in\mathbb{L}^d}\mu_v$
+and $\mu_v$ is the \emph{Bernoulli measure}, which returns $p$ when $v$ is open and $1-p$ when $v$ is closed \cite{klenke_2014}. Analytically, others have shown that in the case of a two-dimensional regular point lattice, the critical probability is $p_c=1/2$ \cite{kersten_1980}.
 
 \end{document}

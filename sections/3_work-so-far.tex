@@ -5,7 +5,14 @@
 
 \subsection{Agency-oriented modelling}
 
-One of the key deficiencies in existing approaches to compartmental models of disease, as described in Section \ref{sec:lit}, is the lack of agency in individuals. By agency, we mean the ability of an individual to make decisions and choose to pursue them. In our context of disease modelling, agency might manifest in a modelled individual's capacity to make decisions about mitigating their own risk of contracting the infection (given the extent to which they are able to do so). To address this, we have designed and implemented a compartmental graph model of infectious disease, which notably includes associating with each individual a `defence rating,' which is a probability corresponding to their internal inclination towards self-protection (which also accounts for external constraints, for instance whether their circumstances mandate increased social contact). In this section, we first describe the implementation carried out so far before discussing the initial results obtained. We will then discuss the conference at which we presented some of these results and the significance of the approach employed.
+One of the key gaps in existing approaches to compartmental models of disease, as described in Section \ref{sec:lit}, is the lack of agency in individuals. By agency, we mean the following:
+\theoremstyle{definition}
+\begin{definition}{Agency.}
+The ability of an individual to make decisions and choose to pursue them
+\end{definition}
+In our context of disease modelling, agency might manifest in a modelled individual's capacity to make decisions about mitigating their own risk of contracting the infection (given the extent to which they are able to do so). To address this, we have designed and implemented a compartmental graph model of infectious disease, which notably includes associating with each individual a `defence rating,' which is a probability corresponding to their internal inclination towards self-protection (which also accounts for external constraints, for instance whether their circumstances mandate increased social contact). In this section, we first describe the implementation carried out so far before discussing the initial results obtained. We will then discuss the conference at which we presented some of these results and the significance of the approach employed.
+
+
 
 \subsubsection{Implementation of agency-based models}
 
